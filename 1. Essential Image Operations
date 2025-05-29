@@ -1,4 +1,5 @@
 import cv2 as cv
+import matplotlib.pyplot as plt
 
 im = cv.imread("demo.jpeg")
 
@@ -14,6 +15,11 @@ _, thresh = cv.threshold(gray, 127, 255, cv.THRESH_BINARY)
 
     # Show the result
 
-cv.imshow("Edges", edge)
-cv.waitKey(0)
-cv.destroyAllWindows()
+plt.imshow(edge)
+plt.show()
+plt.imshow(thresh)
+plt.show()
+plt.imshow(blur)
+plt.show()
+plt.imshow(gray)
+plt.show()
