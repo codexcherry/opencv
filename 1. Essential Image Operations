@@ -1,37 +1,22 @@
 import cv2 as cv
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt  # changed 'lib' to 'plt'
 
 # Read the image
 im = cv.imread("demo.jpeg")
 
-# Convert to grayscale
+# Apply transformations
 gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
-
-# Apply Gaussian blur
-blur = cv.GaussianBlur(gray, (15, 15), 100)
-
-# Apply Canny edge detection
+hsv = cv.cvtColor(im, cv.COLOR_BGR2HSV)
+blur = cv.GaussianBlur(im, (5, 5), 0)
 edge = cv.Canny(im, 50, 150)
 
-# Convert to HSV (corrected line)
-HSV = cv.cvtColor(im, cv.COLOR_RGB2HSV)
+# Store images in a list
+images = [gray, hsv, blur, edge]
+titles = ['Grayscale', 'HSV', 'Blurred', 'Canny Edge']
 
-# Display results
-plt.figure(figsize=(12, 8))
-
-plt.imshow(edge, cmap='gray')
-plt.show()
-
-
-plt.imshow(cv.cvtColor(HSV, cv.COLOR_HSV2RGB))
-plt.show()
-
-
-plt.imshow(blur, cmap='gray')
-plt.show()
-
-
-plt.imshow(gray, cmap='gray')
-plt.show()
-
-
+# Display all images
+for i in range(len(images)):
+    plt.imshow(images[i], cmap='gray' if len(images[i].shape) == 2 else None)
+    plt.title(titles[i])
+    plt.axis('off')
+    plt.show()
