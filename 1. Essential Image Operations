@@ -1,25 +1,37 @@
 import cv2 as cv
 import matplotlib.pyplot as plt
 
+# Read the image
 im = cv.imread("demo.jpeg")
 
+# Convert to grayscale
 gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
 
-    # Apply Gaussian blur to the grayscale image
-blur = cv.GaussianBlur(gray, (5, 5), 0)
+# Apply Gaussian blur
+blur = cv.GaussianBlur(gray, (15, 15), 100)
 
-    # Apply Canny edge detection
-edge = cv.Canny(blur, 50, 150)
+# Apply Canny edge detection
+edge = cv.Canny(im, 50, 150)
 
-_, thresh = cv.threshold(gray, 127, 255, cv.THRESH_BINARY)
+# Convert to HSV (corrected line)
+HSV = cv.cvtColor(im, cv.COLOR_RGB2HSV)
 
-    # Show the result
+# Display results
+plt.figure(figsize=(12, 8))
 
-plt.imshow(edge)
+plt.imshow(edge, cmap='gray')
 plt.show()
-plt.imshow(thresh)
+
+
+plt.imshow(cv.cvtColor(HSV, cv.COLOR_HSV2RGB))
 plt.show()
-plt.imshow(blur)
+
+
+plt.imshow(blur, cmap='gray')
 plt.show()
-plt.imshow(gray)
+
+
+plt.imshow(gray, cmap='gray')
 plt.show()
+
+
