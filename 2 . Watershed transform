@@ -1,0 +1,24 @@
+import cv2
+import numpy as np
+
+# Load and process image
+img = cv2.imread('plant.jpg')
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+_, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+# Morphological operations
+kernel = np.ones((3,3), np.uint8)
+opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, 2)
+sure_bg = cv2.dilate(opening, kernel, 3)
+
+# Watershed markers
+dist = cv2.distanceTransform(opening, cv2.DIST_L2, 5)
+_, sure_fg = cv2.threshold(dist, 0.7*dist.max(), 255, 0)
+markers = cv2.connectedComponents(np.uint8(sure_fg))[1] + 1
+markers[cv2.subtract(sure_bg, np.uint8(sure_fg)) == 255] = 0
+cv2.watershed(img, markers)
+
+# Display results
+img[markers == -1] = [0, 255, 0]  # Green boundaries
+cv2.imshow('Result', np.hstack([img, cv2.applyColorMap(np.uint8(markers*10), cv2.COLORMAP_JET)]))
+cv2.waitKey(0)
