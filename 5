@@ -1,0 +1,20 @@
+import cv2
+import numpy as np
+
+# Load image
+img = cv2.imread('image.jpg')
+h, w = img.shape[:2]
+
+# Adjustable parameters
+angle = 30               # Rotation angle (degrees)
+scale = 0.8              # Zoom factor (0.5 = 50% zoom out, 1.5 = 50% zoom in)
+border_value = (0,0,0)   # Border color (black)
+
+# Apply rotation transformation
+rotation_matrix = cv2.getRotationMatrix2D((w//2, h//2), angle, scale)
+rotated = cv2.warpAffine(img, rotation_matrix, (w, h), borderValue=border_value)
+
+# Display comparison
+cv2.imshow('Angle Change', np.hstack([img, rotated]))
+cv2.waitKey(0)
+cv2.destroyAllWindows()
