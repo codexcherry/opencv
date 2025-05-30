@@ -1,0 +1,20 @@
+import cv2, numpy as np, matplotlib.pyplot as plt
+img = cv2.imread('plant.jpg')
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+plt.figure(figsize=(15,10))
+
+
+edges = cv2.Canny(gray, 100, 200)
+line_img = np.zeros_like(img)
+if (lines := cv2.HoughLinesP(edges, 1, np.pi/180, 100, 50, 10)) is not None:
+    [cv2.line(line_img, (x1,y1), (x2,y2), (0,255,0), 2) for line in lines for x1,y1,x2,y2 in line]
+corner_img = img.copy()
+corner_img[(corners := cv2.cornerHarris(gray, 2, 3, 0.04)) > 0.01*corners.max()] = [255,0,0]
+
+for i, (title, img) in enumerate(zip(
+    ['Original', 'Canny Edges', 'Hough Lines', 'Harris Corners'],
+    [cv2.cvtColor(img, cv2.COLOR_BGR2RGB), edges, cv2.cvtColor(line_img, cv2.COLOR_BGR2RGB), cv2.cvtColor(corner_img, cv2.COLOR_BGR2RGB)]
+), 1):
+    plt.subplot(2,2,i), plt.imshow(img), plt.title(title)
+plt.tight_layout()
+plt.show()
