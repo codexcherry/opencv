@@ -1,0 +1,27 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+img = cv2.imread('plant.jpg')
+h, w = img.shape[:2]
+img1, img2 = img[:, :w//2], img[:, w//2:]
+
+pts1 = np.random.randint(50, w//2-50, (10, 2)).astype(float)
+pts2 = pts1 + np.random.normal(0, 2, pts1.shape)
+
+F, mask = cv2.findFundamentalMat(pts1, pts2, cv2.FM_RANSAC)
+pts1, pts2 = pts1[mask.ravel()==1], pts2[mask.ravel()==1]
+
+plt.figure(figsize=(10,5))
+plt.subplot(121), plt.imshow(cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)), plt.title('Left Image')
+plt.subplot(122), plt.imshow(cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)), plt.title('Right Image')
+
+for r, pt1, pt2 in zip(cv2.computeCorrespondEpilines(pts2.reshape(-1,1,2), 2, F).reshape(-1,3), pts1, pts2):
+    x0, x1 = 0, img1.shape[1]
+    y0, y1 = int(-r[2]/r[1]), int(-(r[2]+r[0]*x1)/r[1])
+    plt.subplot(121).plot([x0,x1], [y0,y1])
+    plt.subplot(121).scatter(*pt1, c='r')
+    plt.subplot(122).scatter(*pt2, c='r')
+
+plt.tight_layout()
+plt.show()
