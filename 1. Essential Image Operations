@@ -1,22 +1,19 @@
-import cv2 as cv
-import matplotlib.pyplot as plt  # changed 'lib' to 'plt'
+import cv2
+import matplotlib.pyplot as plt
 
-# Read the image
-im = cv.imread("demo.jpeg")
+img = cv2.imread('image.jpeg')
+#img = cv2.imread(f'image.jpeg',0)
+opp = [
+    ('orginal',img),
+    ('Edge',cv2.Canny(img,100,200)),
+    ('flipped',cv2.flip(img,2)),
+    ('Gray',cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)),
+    ('HSV',cv2.cvtColor(img,cv2.COLOR_BGR2HSV)),
+    ('Blur',cv2.GaussianBlur(img, (5, 5), 0))
+    #('Equalized', cv2.equalizeHist(img))
+]
 
-# Apply transformations
-gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
-hsv = cv.cvtColor(im, cv.COLOR_BGR2HSV)
-blur = cv.GaussianBlur(im, (5, 5), 0)
-edge = cv.Canny(im, 50, 150)
-
-# Store images in a list
-images = [gray, hsv, blur, edge]
-titles = ['Grayscale', 'HSV', 'Blurred', 'Canny Edge']
-
-# Display all images
-for i in range(len(images)):
-    plt.imshow(images[i], cmap='gray' if len(images[i].shape) == 2 else None)
-    plt.title(titles[i])
-    plt.axis('off')
+for i,(title,image) in enumerate(opp):
+    plt.imshow(image)
+    plt.title(title)
     plt.show()
