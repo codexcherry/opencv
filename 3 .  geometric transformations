@@ -1,24 +1,16 @@
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
+import cv2,numpy as np,matplotlib.pyplot as plt
 
-img = cv2.imread('plant.jpg')
-h, w = img.shape[:2]
+img = cv2.imread('download.jpg')
+h,w = img.shape[:2]
 
-transformed_imgs = [
-    img,  # Original
-    cv2.warpAffine(img, np.float32([[1, 0, 50], [0, 1, 30]]), (w, h)),  # Translated
-    cv2.warpAffine(img, cv2.getRotationMatrix2D((w // 2, h // 2), 45, 1), (w, h)),  # Rotated
-    cv2.resize(img, (int(w * 0.6), int(h * 0.6)))  # Scaled
+opp = [
+    ('original',img),
+    ('Translated',cv2.warpAffine(img, np.float32([[1, 0, 50], [0, 1, 30]]), (w, h))),
+    ("Rotated",cv2.rotate(img,1)),
+    ("scaled",cv2.resize(img, (int(w * 0.6), int(h * 0.6))))
 ]
 
-titles = ['Original', 'Translated', 'Rotated', 'Scaled']
-
-plt.figure(figsize=(15, 5))
-for i in range(4):
-    plt.subplot(1, 4, i + 1)
-    plt.imshow(cv2.cvtColor(transformed_imgs[i], cv2.COLOR_BGR2RGB))
-    plt.title(titles[i])
-    plt.axis('off')
-plt.tight_layout()
-plt.show()
+for i,(title,image) in enumerate(opp):
+    plt.imshow(image)
+    plt.title(title)
+    plt.show()
