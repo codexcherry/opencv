@@ -5,6 +5,4 @@ gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
 found,corner = cv2.findChessboardCorners(gray,(7,7),None)
 imgs = cv2.drawChessboardCorners(img,(7,7),corner,True)
-plt.imshow(imgs)
-
-#It only print the images with Corners
+plt.imshow(imgs) # only image
