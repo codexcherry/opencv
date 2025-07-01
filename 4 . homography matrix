@@ -1,31 +1,25 @@
 import cv2
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-# Load the two images
-img1 = cv2.imread('plant.jpg')  # Source image
-img2 = cv2.imread('demo.jpeg')  # Destination image
+img1 = cv2.imread('image.jpeg')
+img2 = cv2.imread('image.jpeg')
 
-# Resize (optional, to match size or simplify)
-img1 = cv2.resize(img1, (500, 500))
-img2 = cv2.resize(img2, (500, 500))
+pts_scr = np.array([[100,100],[400,100],[100,400],[400,400]],dtype=np.float32)
+pts_dis = np.array([[100,100],[300,150],[130,380],[380,380]],dtype=np.float32)
 
-# Define 4+ corresponding points manually or from a feature matcher
-# Example dummy points
-pts_src = np.array([[100, 100], [400, 100], [100, 400], [400, 400]], dtype=np.float32)
-pts_dst = np.array([[120, 120], [380, 150], [130, 380], [370, 370]], dtype=np.float32)
+he,w = img2.shape[:2]
+h,_ = cv2.findHomography(pts_scr,pts_dis)
+warped_image = cv2.warpPerspective(img1,h,(w,he))
 
-# Compute the Homography matrix
-H, _ = cv2.findHomography(pts_src, pts_dst)
-
-# Warp img1 to img2's perspective
-warped_img = cv2.warpPerspective(img1, H, (img2.shape[1], img2.shape[0]))
-
-plt.imshow(cv2.cvtColor(img1, cv2.COLOR_BGR2RGB))
+plt.imshow(img1)
+plt.title("Image1")
 plt.show()
 
-plt.imshow(cv2.cvtColor(img2, cv2.COLOR_BGR2RGB))
+plt.imshow(img2)
+plt.title("Image2")
 plt.show()
 
-plt.imshow(cv2.cvtColor(warped_img, cv2.COLOR_BGR2RGB))
+plt.imshow(warped_image)
+plt.title("Warped Image")
 plt.show()
