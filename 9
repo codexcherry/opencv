@@ -1,22 +1,14 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 
-img = cv2.imread('plant.jpg')
+img = cv2.imread("image.jpeg")
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 sift = cv2.SIFT_create()
-keypoints, descriptors = sift.detectAndCompute(gray, None)
+kp, des = sift.detectAndCompute(gray, None)
+img_with_keypoints = cv2.drawKeypoints(gray, kp, img)
 
-img_with_keypoints = cv2.drawKeypoints(
-    img, keypoints, None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-
-img_rgb = cv2.cvtColor(img_with_keypoints, cv2.COLOR_BGR2RGB)
-
-plt.imshow(img_rgb)
-plt.title('SIFT Keypoints')
-plt.axis('off')
+plt.imshow(img_with_keypoints)
+plt.title('SIFT KEYPOINTS')
 plt.show()
-
-print(f"Number of keypoints detected: {len(keypoints)}")
-print(f"Descriptor shape: {descriptors.shape}")
