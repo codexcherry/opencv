@@ -20,5 +20,19 @@ cv2.watershed(img, markers)
 
 # Display results
 img[markers == -1] = [0, 255, 0]  # Green boundaries
-cv2.imshow('Result', np.hstack([img, cv2.applyColorMap(np.uint8(markers*10), cv2.COLORMAP_JET)]))
-cv2.waitKey(0)
+plt.imshow(img)
+plt.show()
+
+
+
+
+
+
+################################################################
+boundary_img = np.zeros_like(img)
+boundary_img[markers == -1] = [0, 255, 0]  # Green boundaries
+
+# Display result
+plt.imshow(cv2.cvtColor(boundary_img, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+plt.show()
