@@ -1,1 +1,24 @@
+import cv2,matplotlib.pyplot as plt
+
+img1 = cv2.imread('image.jpeg')
+img2 = cv2.imread('download.jpg')
+
+orb = cv2.ORB_create()
+
+kp1,des1 = orb.detectAndCompute(img1,None)
+kp2,des2 = orb.detectAndCompute(img2,None)
+
+bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+
+match = bf.match(des1,des2)
+match = sorted(match, key=lambda x: x.distance)
+
+matched_img = cv2.drawMatches(img1, kp1, img2, kp2, match[:10], None, flags=0)
+plt.imshow(matched_img)
+plt.show()
+
+# Draw only keypoints (points) on img2
+img2_points = cv2.drawKeypoints(img2, kp2, None, color=(0, 150, 0), flags=0)
+plt.imshow(img2_points)
+
 
