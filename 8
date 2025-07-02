@@ -7,8 +7,8 @@ edge = cv2.Canny(gray,50,150)
 
 line_img = np.zeros_like(img)
 line = cv2.HoughLinesP(edge,1,np.pi/180,100,50,10)
-if lines is not None:
-    for x1,y1,x2,y2 in lines[:,0]:
+if line is not None:
+    for x1,y1,x2,y2 in line[:,0]:
         cv2.line(line_img,(x1,y1),(x2,y2),(0,255,0),2)
 
 
@@ -21,7 +21,7 @@ corner_img[corners > 0.01 * corners.max()] = [255,0,0]
 
 images = [
     ('Original',img),
-    ('Canny Edges',edges),
+    ('Canny Edges',edge),
     ('Hough Lines',line_img),
     ('Harris Corners',corner_img)
 ]
@@ -29,4 +29,5 @@ for i,(title,image) in enumerate(images):
     plt.imshow(image)
     plt.title(title)
     plt.show()
+
     
